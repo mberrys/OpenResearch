@@ -1,0 +1,7 @@
+{
+  "name": "orx",
+  "version": "0.1.0",
+  "author": { "name": "OpenResearch" },
+  "description": "OpenResearch for Claude Code: an /orx pane showing projects, the experiment tree and runs, plus guards for the orx cardinal rules.",
+  "types": "./types/index.d.ts"
+}

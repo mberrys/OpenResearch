@@ -1,0 +1,11 @@
+{
+  "name": "openresearch",
+  "owner": { "name": "OpenResearch" },
+  "plugins": [
+    {
+      "name": "orx",
+      "source": "./claude-code-plugin",
+      "description": "OpenResearch pane and guard hooks for Claude Code."
+    }
+  ]
+}
