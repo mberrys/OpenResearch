@@ -6,9 +6,15 @@ use crate::ProjectCommand;
 
 pub async fn run(args: crate::ProjectArgs) -> Result<()> {
     match args.command {
-        ProjectCommand::View { project_id, all } => {
+        ProjectCommand::View {
+            project_id,
+            all,
+            json,
+        } => {
             let store = crate::store::Store::open()?;
-            resolve_project(store, &project_id)?.view_project(all).await
+            resolve_project(store, &project_id)?
+                .view_project(all, json)
+                .await
         }
         ProjectCommand::Edit {
             project_id,

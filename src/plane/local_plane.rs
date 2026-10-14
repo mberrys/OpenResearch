@@ -56,9 +56,35 @@ impl LocalPlane {
         Ok(RunListing { runs, titles })
     }
 
-    pub async fn view_project(&self, all: bool) -> Result<()> {
+    pub async fn view_project(&self, all: bool, json: bool) -> Result<()> {
         let store = &self.store;
         let project = self.project()?;
+        if json {
+            let experiments = store
+                .list_experiments_by_project(&project.id)?
+                .into_iter()
+                .filter(|e| all || !e.archived)
+                .map(|e| {
+                    serde_json::json!({
+                        "id": e.id,
+                        "title": e.display_name(),
+                        "parentId": e.parent_experiment_id,
+                        "branch": e.branch_name,
+                        "archived": e.archived,
+                    })
+                })
+                .collect::<Vec<_>>();
+            let out = serde_json::json!({
+                "id": project.id,
+                "name": project.name,
+                "path": project.repo_path,
+                "baselineBranch": project.baseline_branch,
+                "runCommand": project.run_command,
+                "experiments": experiments,
+            });
+            println!("{}", serde_json::to_string_pretty(&out)?);
+            return Ok(());
+        }
         println!("{} (local)", project.name);
         println!("  id:      {}", project.id);
         println!("  repo:    {}", project.repo_path);

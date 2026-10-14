@@ -20,6 +20,26 @@ pub async fn run(args: crate::RunsArgs) -> Result<()> {
         None => listing.runs,
     };
 
+    if args.json {
+        let rows = filtered
+            .iter()
+            .map(|r| {
+                serde_json::json!({
+                    "id": r.id,
+                    "experimentId": r.experiment_id,
+                    "experiment": listing.titles.get(&r.experiment_id),
+                    "status": r.status,
+                    "commit": r.commit_sha,
+                    "durationSecs": r.duration_secs,
+                    "updated": r.updated_display,
+                    "failure": r.failure_detail(),
+                })
+            })
+            .collect::<Vec<_>>();
+        println!("{}", serde_json::to_string_pretty(&rows)?);
+        return Ok(());
+    }
+
     if filtered.is_empty() {
         println!("No runs found.");
         return Ok(());
