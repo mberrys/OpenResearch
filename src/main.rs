@@ -224,6 +224,9 @@ pub enum ProjectCommand {
         /// Include archived experiments in the listing.
         #[arg(long)]
         all: bool,
+        /// Emit the project and its experiments as JSON.
+        #[arg(long)]
+        json: bool,
     },
 
     /// Edit a local project's name or run command.
@@ -245,6 +248,9 @@ pub struct RunsArgs {
     /// Filter to one experiment.
     #[arg(long)]
     pub experiment: Option<String>,
+    /// Emit runs as JSON.
+    #[arg(long)]
+    pub json: bool,
 }
 
 #[derive(Args, Debug)]
